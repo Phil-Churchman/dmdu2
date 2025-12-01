@@ -51,38 +51,26 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read  # Required for actions/checkout
-  
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
     steps:
-      # Download artifact from the build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
-  
-      # Extract the artifact to a folder
-      - name: Extract artifact
-        run: |
-          mkdir extracted
-          tar -xzf python-app/output.tar.gz -C extracted
-  
-      # Login to Azure
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F645D62F9E9445D3B06125834FEE5642 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2898B0F1F0994549849C0944A98E6838 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DA690FEF882341D8AF8DEAE0694B8ABE }}
-  
-      # Deploy extracted folder to Azure Web App
-      - name: Deploy to Azure Web App
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_196D2D76F6DB4FE9B85DC3F477DC2E77 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0C33F7E8D2AD40EDB19F2AA3E8C0E779 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DEF538DD9D0E4A6BB8D308884BBFE0DF }}
+
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'dmdu'
           slot-name: 'Production'
-          package: extracted/
-
-
           
