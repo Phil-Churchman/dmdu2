@@ -67,6 +67,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_313EE06F9D8F4BE9A58DB5CF0E7F7C0A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_61E20460029345899DE2B7D55E175770 }}
 
+      - name: Archive Python app
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          zip -r app.zip . -x "*.git*"
+      
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
@@ -75,3 +82,4 @@ jobs:
           slot-name: 'Production'
 
           
+
