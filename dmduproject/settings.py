@@ -97,7 +97,7 @@ RECAPTCHA_PRIVATE_KEY = '6Ld1VLAqAAAAAB2yjFpE59ZnipLXxU6j6Wx8obUn'
 
 if os.environ.get('DEV') == "false":
     
-    DEBUG = False
+    DEBUG = True
 
     # ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'], os.path.join(os.environ['WEBSITE_HOSTNAME'], "*")] if 'WEBSITE_HOSTNAME' in os.environ else []
     ALLOWED_HOSTS = ["*"]
