@@ -22,13 +22,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.12'
 
-      - name: Install Oryx (for build)
-        run: |
-          curl -sSL https://github.com/microsoft/Oryx/releases/latest/download/oryx-linux-x64.tar.gz | tar -xz -C /usr/local/bin
-
-      - name: Oryx Build
+      # 🛠️ Local Build Section (Optional)
+      # The following section in your workflow is designed to catch build issues early on the client side, before deployment. This can be helpful for debugging and validation. However, if this step significantly increases deployment time and early detection is not critical for your workflow, you may remove this section to streamline the deployment process.
+      - name: Create and Start virtual environment and Install dependencies
         run: |
           SOURCE_DIR=$GITHUB_WORKSPACE
           DEST_DIR=$GITHUB_WORKSPACE/output
@@ -68,9 +66,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_98A3A5F22AFC49C280B3D26C8423F15C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_969B834A79C04E2FA685DC80F9D598D9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_70AECE6C305C4B129F6717FBAB21442D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3EF5C30C28BF4FD9AB685B749D600D06 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_070B6445EF344FCABD5BADA557AACAB8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FB5393D6CF824FA2A4DE3CFFA4E34FD4 }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
