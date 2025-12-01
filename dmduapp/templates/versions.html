@@ -1,0 +1,181 @@
+{% extends "master.html" %}
+ {% block title %}
+<title>Versions</title>
+
+{% endblock %} {% block submenu %}
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Versions</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link active dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+          Add version
+          </a>
+        
+          <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="/add_version/"
+              >Standard</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="/add_version_blank/"
+              >Blank<a
+            >
+          </li>
+          </ul>
+
+          <li class="nav-item dropdown">
+          
+          <a
+            class="nav-link active dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+          Import / export
+          </a>
+        
+          <ul class="dropdown-menu">
+ 
+                  <li>
+            <a 
+            class="dropdown-item"
+            href="/export_method_params/"
+            >Export version</a>
+          </li>
+          {% if superuser %}
+          <li>
+            <a 
+            class="dropdown-item"
+            href="/import_version/"
+            >Import version</a>
+          </li>
+          {% endif %}
+        </ul>
+        </li> 
+                  <li class="nav-item">
+            <a class="nav-link" href="/versions_archive/"
+              >Archived versions</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+{% endblock %} {% block content %}
+<div class="container mt-3">
+  <label for="select_version" class="form-label">Active version</label>
+  <form action="/versions/" method="post" id="version_selection">
+    {%csrf_token%}
+  </form>
+  <select
+    class="form-select"
+    aria-label="Current version"
+    name="select_version"
+    id="select_version"
+    form="version_selection"
+    onchange="this.form.submit()"
+  >
+
+    {% if version_not_selected%}
+    <option value="None" selected>None selected</option>
+    {% endif %}
+
+    {% for x in versions %} {% if x.current %}
+    <option value="{{ x.id }}" selected>{{ x.name }}</option>
+    {% else %}
+    <option value="{{ x.id }}">{{ x.name }}</option>
+    {% endif %} {% endfor %}
+  </select>
+
+  <table class="table table-sm table-borderless align-middle w-auto mt-3">
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+
+    {% for x in versions %} {% if x.current %}
+    <tr id="row{{x.id}}" class="table-active">
+      {% else %}
+    </tr>
+
+    <tr id="row{{x.id}}" class="">
+      {% endif %}
+
+      <td>
+        <form action="/archive_version/{{x.id}}">
+          <input
+            type="image"
+            src="/static/icons/archive.svg"
+            name="submit"
+            alt="Submit"
+            style="width: 20px; height: auto"
+          />
+        </form>
+      </td>
+      <td>
+        <form action="/copy_version/{{x.id}}">
+          <input
+            type="image"
+            name="submit"
+            src="/static/icons/copy.svg"
+            alt="Submit"
+            style="width: 20px; height: auto"
+          />
+        </form>
+      </td>
+      <td>
+        <form action="/edit_version/{{x.id}}">
+          <input
+            type="image"
+            name="submit"
+            src="/static/icons/pencil.svg"
+            alt="Submit"
+            style="width: 20px; height: auto"
+          />
+        </form>
+      </td>
+      <td
+      style="padding-left: 10px">
+        <a
+          
+          href="/set_version/{{x.id}}"
+          class="version_name parent"
+          >{{x.name}}</a
+        >
+       </td>
+    </tr>
+
+    {% endfor %}
+  </table>
+
+  <p></p>
+</div>
+{% if fail_modal %}
+<div id="uploadFail"></div>
+{%endif%} {% if gantt_error_modal %}
+<div id="ganttError"></div>
+{%endif%} {% endblock %}

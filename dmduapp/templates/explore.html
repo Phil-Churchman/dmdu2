@@ -1,0 +1,328 @@
+{% extends "master.html" %}
+
+{% block title %}
+<title>Explore</title>
+{% endblock %} {% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Explore method choice</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+{% endblock %} {% block content %}
+
+<div class="container" id="capture">
+  <div class="container">
+  <table class="table table-borderless align-middle">
+    <thead>
+      <th style="width: 100%; text-align: center;">Set factors</th>
+    </thead>
+
+  <tbody>
+  {% for variable in variables %}
+  {% if variable.variable != "NONE" %}
+  <tr>
+    <td>
+  <div class="d-flex justify-content-between">
+  <label for="slider{{ variable.index }}" class="form-label mb-0">{{ variable.variable }}:</label>
+  <label id="slider{{ variable.index }}Value" class="form-label mb-0">{{ variable.value }}</label>
+  </div>
+  <input type="range" class="form-range" min="0" max="100" step="1" id="slider{{ variable.index }}" value="{{ variable.value }}">
+
+  </td>
+  </tr>
+  {% endif %}
+
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+  <table class="table table-borderless align-middle">
+  <tr>
+  {% if guest %}
+  <td></td>
+  {% else %}
+  <td>
+  <div class="container">
+  <button class="btn btn-sm btn-success m-0" onclick="saveValues()" id = "save-button">Saved</button>
+  </div>
+  </td>
+  {% endif %}
+
+  <td class="d-flex justify-content-end">
+    <label class="form-check-label me-2" for="dynamicsort">Dynamic sort</label>
+    <div class="form-check form-switch">
+      <input
+      class="form-check-input"
+      type="checkbox"
+      id="dynamicsort"
+      onchange="updateSort()"
+      checked
+      />
+    </div>
+  </td>
+  </tr>
+</table>
+  <div class="container">
+<table class="table table-horizontal-lines align-middle">
+  <tr id="rowhead">
+  <th style="width: 30%;">
+    Method
+  </th>
+  <th style="width: 10%; text-align: center;">
+    
+  </th>  
+  <th style="width: 60%; text-align: center;">
+    Suitability
+  </th>
+  </tr>
+  {% for method in methods %}
+  <tr id="row{{method.index}}">
+    <td style="width: 30%;">
+      {% if guest %}
+      <a  id="name{{method.index}}"
+          class="item{{method.index}} parent"
+          href="/view_method/{{method.index}}/1"
+          >{{ method.name }}</a>              
+      {% else %}
+      <a  id="name{{method.index}}"
+          class="item{{method.index}}
+          parent"href="/edit_method/{{method.id}}"
+          onclick="saveValues()"
+          >{{ method.name }}</a>
+          {% endif %}    
+      </td>
+      <!-- <td style="width: 10%; text-align: center;">
+        {% if method.dmdu %}
+        &#10003;
+        {% endif %}
+      </td> -->
+      <td style="width: 10%; text-align: center;">
+        {{ method.management }}
+
+      </td>
+    <td style="width: 60%;">
+
+      <div class="container">
+    <div class="progress">
+      <div id="dynamicBar{{ method.index }}" class="progress-bar" role="progressbar" style="width: 50%">
+      </div>
+    </div>
+    </div>
+  </td>
+  </tr>
+  {%endfor%}
+  </table>
+  </div>
+  </div>
+  {{ methods|json_script:"methods" }}
+  {{ variables|json_script:"variables" }}
+  {{ guest|json_script:"guest" }}
+<script>
+  const guest = JSON.parse(document.getElementById('guest').textContent);
+  const methods = JSON.parse(document.getElementById('methods').textContent);
+  const variables = JSON.parse(document.getElementById('variables').textContent);
+  if (localStorage.getItem("isSorted") != null) {
+    var isSorted = localStorage.getItem("isSorted")
+  }
+  const toggle = document.getElementById("dynamicsort")
+  if (isSorted === "true") {
+  toggle.checked = true
+  }
+  else {
+    toggle.checked = false
+  }
+  updateSort()
+  const slider = {}
+  const output = {}
+  const saveButton = document.getElementById('save-button');
+  for (let i = 0; i < variables.length; i++) {
+    if (variables[i].variable == "NONE") {continue}
+
+  slider[i] = document.getElementById('slider' + String(variables[i].index));
+  output[i] = document.getElementById('slider' + String(variables[i].index) + 'Value');
+  if(guest) {
+    if (localStorage.getItem(slider[i].id) != null) {
+    slider[i].value = localStorage.getItem(slider[i].id)
+    output[i].textContent = localStorage.getItem(slider[i].id)
+    }
+  }
+
+
+  
+  slider[i].addEventListener('input', () => {
+    output[i].textContent = slider[i].value;
+    if (guest) {localStorage.setItem(slider[i].id, slider[i].value)}
+    variables[i].value = slider[i].value
+    if (!guest) {
+    saveButton.textContent = "Save values";
+    saveButton.classList.remove("btn-success");
+    saveButton.classList.add("btn-danger");
+    }
+    updateBar()
+  });
+  } 
+  
+
+    document.querySelectorAll('input[type="range"]').forEach(slider => {
+    slider.addEventListener('touchstart', e => {
+    // Prevent scrolling when slider is touched
+    e.stopPropagation();
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+    });
+
+    slider.addEventListener('touchend', e => {
+    // Re-enable scroll after sliding ends
+    document.body.style.overflow = '';
+    });
+
+    slider.addEventListener('touchmove', e => {
+    e.stopPropagation(); // Prevent scroll while sliding
+    });
+    });
+
+    function updateSort() {
+      
+      isSorted = toggle.checked      
+      localStorage.setItem("isSorted", isSorted)
+        if (isSorted) {
+        methods.sort((a,b) => (a.val - b.val) )
+        }
+        else {
+        methods.sort((a,b) => (b.name.localeCompare(a.name)) )
+        }  
+        const rowhead = document.getElementById('rowhead')
+        const row0 = document.getElementById("row" + methods[0].index)
+        for (i=methods.length-1; i>0; i--) {
+          let row = document.getElementById("row" + methods[i].index)
+          row.parentNode.insertBefore( row, row0)      
+      }
+    }
+
+    function updateBar() {
+      // const dynamicSort = document.getElementById("dynamicsort").checked
+      const barVals = {}
+      var barVal
+      var barCol
+      for (i=0; i<methods.length; i++) {
+        barVal = 1
+        for (j = 0; j < variables.length; j++) {
+          if (variables[j].variable == "NONE") {continue}
+          if (variables[j].option_reqt) {
+          barVal = barVal * (1 - (methods[i][variables[j].name] / 100) * (1 - variables[j].value / 100))
+          }
+          else {
+            barVal = barVal * (1 - (variables[j].value / 100) * (1 - methods[i][variables[j].name] / 100))
+          }
+        }
+      
+        barVal = Math.round(barVal * 100)
+        bar[methods[i].index].style.width = String(barVal) + '%';
+        if (barVal < 50) {
+          barCol = [Math.round((barVal / 50 * 255 + (1 - barVal / 50) * 220)), Math.round((barVal / 50 * 193 + (1 - barVal / 50) * 53)), Math.round((barVal / 50 * 7 + (1 - barVal / 50) * 69))]
+        }
+          else {
+          barCol = [Math.round(((barVal - 50) / 50 * 40 + (1 - (barVal - 50) / 50) * 255)), Math.round(((barVal - 50) / 50 * 167 + (1 - (barVal - 50) / 50) * 193)), Math.round(((barVal - 50) / 50 * 69 + (1 - (barVal - 50) / 50) * 7))]
+        }
+
+          bar[methods[i].index].style.backgroundColor = "rgb(" + String(barCol[0]) + ", " + String(barCol[1]) + ", " + String(barCol[2])  + ")"
+          methods[i].val = barVal
+        }
+        if (isSorted) {
+        
+        methods.sort((a,b) => (a.val - b.val) )
+        const rowhead = document.getElementById('rowhead')
+        const row0 = document.getElementById("row" + methods[0].index)
+        for (i=methods.length-1; i>0; i--) {
+          let row = document.getElementById("row" + methods[i].index)
+          row.parentNode.insertBefore( row, row0)
+        }
+      }
+
+
+    }
+
+  const bar = {}
+  // const range = []
+  // const label = []
+    for (let i = 0; i < methods.length; i++) {
+    bar[methods[i].index] = document.getElementById('dynamicBar' + String(methods[i].index));
+    }
+    updateBar();
+   
+
+
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+
+function sendAJAXRequest(post_data, dest) {
+  // e.preventDefault();
+  $.post(
+    dest,
+    {
+      post_data: post_data,
+      csrfmiddlewaretoken: getCookie("csrftoken"),
+    }
+  )
+  .done(function(response) {
+    // Assuming response is JSON and has a 'status' key
+    if (response.status === 'success') {
+
+        // console.log('POST was successful:', response.message);
+        // You can update the UI or notify the user here
+    } else {
+        // console.error('Unexpected response:', response);
+    }
+  })
+  .fail(function(xhr, status, error) {
+      // Handle the error scenario
+      // console.error('Error:', error);
+  });
+  
+}
+  function saveValues() {
+    sendAJAXRequest(JSON.stringify(["/explore/", variables]), "/edit-param-post/");
+    saveButton.textContent = "Saved";
+      saveButton.classList.remove("btn-danger");
+      saveButton.classList.add("btn-success");
+  }
+
+</script>
+  </table>
+  <p></p>
+</div>
+{% endblock %}

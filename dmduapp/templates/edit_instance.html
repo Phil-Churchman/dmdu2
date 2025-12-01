@@ -1,0 +1,74 @@
+{% extends "master.html" %}
+
+{% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">
+        {% block settingtitle %}
+        {% endblock %}
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        </ul>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<form action="{{action}}" method="post" id="paramaters">
+
+<table  class="table table-borderless align-middle w-auto" >
+
+  <th scope="col"></th>
+  <tr>
+
+  <td>
+    <div class="button-group">
+      <button type="submit" class="btn btn-primary" onclick="messageModal('Please wait...')">Save</button>
+      <a class="btn btn-secondary" value="Cancel" id="cancel-btn" href="/cancel/" onclick="messageModal('Please wait...')">Cancel</a>
+    </div>
+    
+  </td>
+
+</table>
+
+  {%csrf_token%}
+  {%if form%}
+
+  <table class="table table-borderless align-middle w-auto">
+    <thead>
+      <tr>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+
+      {%for field in form%}
+      <tr>
+        <td>
+            <a>{{field.label}}</a>
+          </td>
+
+          <td>
+      <div class="col-md-12">{{field}}</div>
+    </td>
+    </tr>
+      {%endfor%}
+    </tbody>
+    </table>
+
+       </div>
+  {%endif%}
+</form>
+</div>
+{% endblock %}

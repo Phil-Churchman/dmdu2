@@ -1,0 +1,101 @@
+{% extends "master.html" %}
+
+{% block title %}
+    <title>Versions</title>
+{% endblock %}
+{% block submenu %}
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Archived versions</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/versions/">Unarchived versions</a>
+            <!-- <a class="nav-link" aria-current="page" data-bs-toggle="offcanvas" href="#versionSidebar" role="button" aria-controls="offcanvasExample">Add version</a> -->
+          </li>      
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<table class="table table-sm table-borderless align-middle w-auto">
+
+{% for x in versions %}
+<tr id="row{{x.id}}" class="">
+  <!-- <td>
+
+    <form id="del{{x.id}}" onsubmit="return false;">
+      <input class="delete" type="image" src="/static/icons/trash3.svg" value='{"id": {{x.id}}, "ob_type": "version", "backup": false}' onclick="delAJAX(this.value)" style="width:20px;height:auto;"/>
+    </form>
+  
+  </td> -->
+  <td
+  style="padding-left: 0px"
+  >
+    
+    <form action="/archive_version/{{x.id}}" onsubmit="showPleaseWait()">
+      <input
+        type="image"
+        src="/static/icons/archive-fill.svg"
+        name="submit"
+        alt="Submit"
+        style="width: 20px; height: auto"
+      />
+    </form>
+
+
+    <!-- <form action="/archive-version/{{x.id}}">
+    <input type="image" name="submit" src="/static/icons/archive-fill.svg" alt="Submit" style="width:20px;height:auto;" />
+    </form> -->
+</td>
+      <td>
+        <form action="/edit_version/{{x.id}}">
+          <input
+            type="image"
+            name="submit"
+            src="/static/icons/pencil.svg"
+            alt="Submit"
+            style="width: 20px; height: auto"
+          />
+        </form>
+      </td>
+  
+<td
+style="padding-left: 10px"
+>
+  <a>{{x.name}}</a>
+</td>
+<!-- <td>
+  <a>{{x.number}}</a>
+</td> -->
+<!-- <td style="text-align: center;">
+  {% if x.current %}
+  <img src = "/static/icons/check.svg" style="width:20px;height:auto;">
+  {% endif %}
+</td> -->
+
+
+
+  <!-- <td><form action="/update_loops/{{x.id}}">
+  <button type="submit" class="btn btn-secondary btn-sm">Update loops</button>
+</form></td> -->
+<td>
+</tr>
+{% endfor %}
+</table>
+
+
+<p></p>
+</div>
+{% endblock %}

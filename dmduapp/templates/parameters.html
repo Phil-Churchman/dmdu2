@@ -1,0 +1,191 @@
+{% extends "master.html" %} {% block title %}
+<title>Explore</title>
+{% endblock %} {% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Set factor per method</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+{% endblock %} {% block content %}
+
+<div class="container-fluid" id="capture">
+  <div class="table-responsive">
+  <table class="table table-horizontal-lines align-middle table-fixed">
+    <thead>
+      <tr>
+    <th class="fixed-col-1 sticky-col">
+        <div>
+  <button class="btn btn-success mt-2" onclick="saveValues()" id = "save-button">Saved</button>
+</div>
+  
+
+  </th>
+  {% for name in var_names %}
+
+  <th class="fixed-col-1 text-center">{{ name }}</th>
+
+  {% endfor %}
+  </tr>
+  </thead>
+  <tbody>
+  {% for method in methods %}
+  <tr>
+         <td  class="fixed-col-1 sticky-col">
+        <a
+          id="name{{method.id}}"
+          class="item{{method.id}} parent"
+          href="/edit_method/{{method.id}}"
+          onclick="saveValues()"
+          >{{method.name}}</a
+        >
+      </td>
+  {% for val in method.vals %}
+
+  <td>
+  <div class="container mt-2">
+  <div class="text-center">
+  <label id="slider{{method.index}}-{{ val.index }}Value" class="form-label mb-0">{{ val.val }}</label>
+  </div>  
+  <input type="range" class="form-range" min="0" max="100" step="1" id="slider{{method.index}}-{{ val.index }}" value="{{ val.val }}">
+ </div>
+  </td>
+
+  {% endfor %}
+  </tr>
+
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+
+
+  </div>
+  {{ methods|json_script:"methods" }}
+
+<script>
+  
+
+const methods = JSON.parse(document.getElementById('methods').textContent);
+
+  const slider = {}
+  const sliderValue = {}
+  const saveButton = document.getElementById('save-button');
+  for (let i = 0; i < methods.length; i++) {
+    slider[i] = {}
+    sliderValue[i] = {}
+    for (let j= 0; j < methods[i].vals.length; j++) {
+  
+  slider[i][j] = document.getElementById('slider' + String(methods[i].index) + "-" + String(methods[i].vals[j].index));
+  sliderValue[i][j] = document.getElementById('slider' + String(methods[i].index) + "-" + String(methods[i].vals[j].index) + 'Value');
+  slider[i][j].addEventListener('input', () => {
+    sliderValue[i][j].textContent = String(slider[i][j].value);
+    slider[i][j].classList.add("slider-changed");
+    // sliderValue.textContent = "Change";
+    saveButton.textContent = "Save values";
+    saveButton.classList.remove("btn-success");
+    saveButton.classList.add("btn-danger");
+  });  
+}
+}
+
+  document.querySelectorAll('input[type="range"]').forEach(slider => {
+    slider.addEventListener('touchstart', e => {
+    // Prevent scrolling when slider is touched
+    e.stopPropagation();
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+    });
+
+    slider.addEventListener('touchend', e => {
+    // Re-enable scroll after sliding ends
+    document.body.style.overflow = '';
+    });
+
+    slider.addEventListener('touchmove', e => {
+    e.stopPropagation(); // Prevent scroll while sliding
+    });
+    });
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+
+function sendAJAXRequest(post_data, dest) {
+  // e.preventDefault();
+  $.post(
+    dest,
+    {
+      post_data: post_data,
+      csrfmiddlewaretoken: getCookie("csrftoken"),
+    }
+  )
+  .done(function(response) {
+    // Assuming response is JSON and has a 'status' key
+    if (response.status === 'success') {
+
+        // console.log('POST was successful:', response.message);
+        // You can update the UI or notify the user here
+    } else {
+        // console.error('Unexpected response:', response);
+    }
+  })
+  .fail(function(xhr, status, error) {
+      // Handle the error scenario
+      // console.error('Error:', error);
+  });
+  
+}
+
+
+  function saveValues() {
+    const output = {}
+
+  for (let i = 0; i < methods.length; i++) {
+    output[methods[i].index] = {}
+    for (let j= 0; j < methods[i].vals.length; j++) {
+      output[methods[i].index][methods[i].vals[j].name] = slider[i][j].value
+    }
+  }   
+    sendAJAXRequest(JSON.stringify(["/methods/", output]), "/edit-methods-post/");
+    saveButton.textContent = "Saved";
+      saveButton.classList.remove("btn-danger");
+      saveButton.classList.add("btn-success");
+  }
+
+
+  
+</script>
+
+{% endblock %}

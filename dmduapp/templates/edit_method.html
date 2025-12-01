@@ -1,0 +1,48 @@
+{% extends "master.html" %}
+
+{% block title %}
+    <title>Edit method</title>
+{% endblock %}
+{% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Edit method</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/del_method/{{ id }}/">Delete method</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/simple_view_toggle/{{ id }}/">Simple view toggle</a>
+          </li>        
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+  <p>Links</p>
+{% for link in links %}
+<p>      
+<a href="{{ link.1 }}"  target="_blank" rel="noopener noreferrer" class="parent"
+>
+        {{ link.0 }}
+      </a></p>
+{% endfor %}
+<form action="/edit_method/{{id}}/" method="post">
+  {%csrf_token%}  {%if form%}
+  {% include 'partials/object_form.html' %} 
+  {%endif%}
+</form>
+</div>
+{% endblock %}

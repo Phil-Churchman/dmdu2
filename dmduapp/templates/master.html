@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %} 
+    <script src="{% static '/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static '/js/core.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  
+
+    {% block script %}
+
+    {% endblock %}    
+    
+    {% include 'partials/master_style.html' %}
+    {% block title %}{% endblock %}
+ <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
+  
+{% block head %}
+
+{% endblock %}
+
+</head>
+
+<body id="body">
+
+
+  {% include 'partials/_loading-modal.html' %} 
+  {% include 'partials/_message-modal.html' %} 
+  {% if user.is_authenticated or guest %}
+  {% include 'partials/master_nav.html' %}
+
+  {% block submenu %}
+
+  {% endblock %}
+
+  <div class="container m-0 p-1">
+
+{% block content %}
+
+{% endblock %}
+{% else %}
+  <div class="container m-0">
+    <p></p>
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a><br>
+  <a href="{% url 'signup' %}">Sign up</a><br>
+</div>
+{% endif %}
+</div>
+
+<script src="{% static '/js/bootstrap.bundle.js' %}"></script>
+</body>
+</html>

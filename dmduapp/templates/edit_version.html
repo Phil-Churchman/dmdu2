@@ -1,0 +1,77 @@
+{% extends "master.html" %}
+
+{% block title %}
+    <title>Index</title>
+{% endblock %}
+{% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Edit version</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="modal" data-bs-target="#deleteModal" aria-current="page" href="#">Delete version</a>
+
+            </li>   
+          
+        </ul>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+  <!-- Warning Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Warning</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!-- Modal Body -->
+          <div class="modal-body">
+              <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+          </div>
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+              <!-- Cancel Button -->
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <!-- Confirm Delete Button -->
+              <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  // Handle the delete confirmation
+  document.getElementById('confirmDelete').addEventListener('click', function() {
+      // Action to be taken upon confirmation (e.g., delete the item)
+      window.location.href="/del_version/{{ id }}/"
+
+      // Close the modal after action is performed
+      var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+      deleteModal.hide();
+  });
+</script>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+  <p></p>
+<form action="/edit_version/{{id}}" method="post">
+  {%csrf_token%}
+  {%if form%}
+  {% include 'partials/object_form.html' %} 
+  {%endif%}
+</form>
+</div>
+{% endblock %}

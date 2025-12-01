@@ -1,0 +1,42 @@
+{% extends "master.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Import version</title>
+{% endblock %}
+
+{% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Import version</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        </ul>
+      </div>
+    </div>
+  </nav>
+  </div>
+
+{% endblock %}
+
+{% block content %}
+<p></p>
+  <form method="post" action="/import_version/" enctype="multipart/form-data" onsubmit="showPleaseWait()">
+    <div>
+    {% csrf_token %}
+    <input class="form-control mb-3" type="file" name="myfile" accept=".xlsx">
+
+    {%if form%}
+    {% include 'partials/object_form.html' %} 
+    {% endif %}
+</form>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,254 @@
+<style>
+  img {
+    width: 100px;
+    height: auto;
+  }
+  .static {
+    cursor: not-allowed;
+  }
+  .editable {
+    cursor: pointer;
+  }
+
+  .draggable {
+    cursor: pointer;
+  }
+  table {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  /* td {
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  th {
+    padding: 0px !important;
+    margin: 0px !important;
+  } */
+
+  #svg-canvas * {
+    touch-action: manipulation;
+  }
+
+    
+  .fixed-button {
+          /* position: fixed; Fix position relative to the viewport */
+          bottom: 20px; /* Distance from the bottom */
+          right: 20px; /* Distance from the right */
+          z-index: 1000; /* Ensure the button is above other content */
+        }
+
+  .hidden {
+    display: none;
+  }
+
+  .patchtext {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    font-family: Arial;
+  }
+
+  .label {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    font-family: Arial;
+  }
+
+  .axistext {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    font-family: Arial;
+  }
+
+  .no-scroll {
+    overflow: hidden;
+    touch-action: none;
+}
+
+.fixed-button {
+      z-index: 1000; /* Ensures the button stays on top of other content */
+    }
+
+  .nodetext {
+    cursor: pointer;
+    /* -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none; */
+    font-family: Arial;
+  }
+
+  .ganttbar {
+    cursor: pointer;
+
+  }
+
+  .ticktext {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    font-family: Arial;
+  }
+
+  .dropdown-item {
+    font-size: 12px;
+  }
+
+  .nav-item {
+    font-size: 13px;
+  }
+
+
+  /* .table td.fit, 
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+} */
+
+  nav a {
+    text-decoration: none !important;
+  }
+
+  #nav_version {
+    font-size: 13px;
+    color: #afd2ec;
+  }
+
+  #workshop_user {
+    /* font-size: 10px; */
+    color: #12b100;
+  }
+
+  /* #master_brand {
+  color: #AFD2EC;
+} */
+
+  .version_name {
+    color: black;
+  }
+  /* 
+.form-label {
+  color: #1163A1;
+}
+ */
+
+  .parent {
+    color: #1163a1;
+    text-decoration: none;
+  }
+
+  .parent-disabled {
+    color: grey;
+    text-decoration: none;
+  }
+
+  .form-check {
+    color: #1163a1;
+  }
+
+  .standard {
+    background-color: white;
+  }
+
+  .standard-clicked {
+    background-color: grey;
+  }
+
+  .form-inline {
+  display: flex;
+  align-items: center;
+}
+
+img {
+
+  width: 800px;
+  max-width: 100%;
+  height: auto;
+}
+
+  /* #sub_brand {
+  color: #1163A1;
+} */
+
+  /* #save-btn {
+  color: white;
+  background-color: #1163A1;
+} */
+
+    .progress {
+      height: 30px;
+    }
+
+  .table-horizontal-lines td,
+  .table-horizontal-lines th {
+    border-top: 1px solid #dee2e6;
+    border-left: none;
+    border-right: none;
+  }
+
+  .table-horizontal-lines thead th {
+    border-bottom: 2px solid #dee2e6;
+  }
+
+
+  .table-fixed {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    max-height: 100%; 
+  }
+
+  /* Sticky first column */
+  .sticky-col {
+    position: sticky;
+    left: 0;
+    background-color: #fff; /* Prevent overlap */
+    z-index: 2;
+  }
+
+  .fixed-col-1 {
+    width: 150px;
+
+  }
+  .fixed-col-2 {
+    width: 200px;
+  }
+
+  /* Ensure header has higher z-index */
+  thead .sticky-col {
+    z-index: 3;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Bootstrap light background */
+    z-index: 3;
+  }
+
+    thead .sticky-col {
+    z-index: 4;
+  }
+
+</style>

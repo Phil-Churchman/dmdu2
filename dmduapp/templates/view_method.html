@@ -1,0 +1,107 @@
+{% extends "master.html" %}
+
+
+{% block title %}
+    <title>Edit method</title>
+{% endblock %}
+{% block submenu %}
+
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">View method</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+ <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          
+            {% if guest %}
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/guest/"
+              >Return to explore</a
+            >
+            </li>
+            {% else %}
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/explore/"
+              >Return to explore</a
+            >
+            </li>  
+            <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/simple_view_toggle/{{ id }}/">Simple view toggle</a>
+          </li>             
+   
+            {% endif %}
+          
+        </ul>        
+      </div>
+    </div>
+  </nav>
+  </div>
+
+{% endblock %}
+{% block content %}
+<div class="container">
+<table class="table table-horizontal-lines align-middle">
+  <tr  style="visibility: collapse;">
+  <th style="width: 30%;"></th>
+  <th style="width: 20%;"></th>
+  <th style="width: 50%;"></th>
+  </tr>
+  {% for item in method %}
+  <tr>
+    <td>
+      <b>{{ item.0 }}</b>
+    </td>
+    <td colspan="2">
+      {{ item.1 }}
+    </td>    
+    
+  </tr>
+{% endfor %}
+
+  {% if dmdu %}
+  <tr>
+    <td>
+      <b>DMDU</b>
+    </td>
+    <td colspan="2">
+      <a>&#10003;</a>
+    </td>   
+</tr>
+{% else %}
+{% endif %}
+<tr>
+    <td style>
+      <b>Links</b>
+    </td>
+    <td colspan="2"> 
+      {% for link in links %}     
+    <a href="{{ link.1 }}"  target="_blank" rel="noopener noreferrer" class="parent">
+      {{ link.0 }}
+      </a><br>
+      {% endfor %}
+    </td>
+</tr>
+  <tr>
+    <td  colspan="2">
+      <b>Criticality:</b>
+    </td>
+
+    </tr>
+{% for variable in variables %}
+  <tr>
+    <td colspan="2">
+      <div style="margin-left:15px">
+      <a>{{ variable.0 }}</a>
+      </div>
+    </td>
+    <td>
+      <a>{{ variable.1 }}%</a>
+    </td>   
+</tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

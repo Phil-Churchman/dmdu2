@@ -1,0 +1,66 @@
+{% extends "master.html" %} {% block title %}
+<title>Methods</title>
+{% endblock %} {% block submenu %}
+<div>
+  <nav class="navbar navbar-expand-md bg-light" id="view_nav">
+    <div class="container-fluid">
+      <a class="navbar-brand" id="sub_brand" href="#">Methods</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/add_method/"
+              >Add method</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="/parameters/"
+              >Set variables</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+{% endblock %} {% block content %}
+<div class="table-container">
+  <table class="table table-sm table-borderless align-middle w-auto">
+    <!-- <th scope="col" style="width: 30px; text-align: center; padding: 0px"></th>
+    <th scope="col" style="width: 30px; text-align: center; padding: 0px"></th>
+    <th scope="col" style="width: 30px; text-align: center; padding: 0px"></th>
+    <th scope="col" style="width: 40px; padding: 0px"></th>
+    <th scope="col" style="width: 2000px; padding: 0px"></th> -->
+
+    <th scope="col"></th>
+    <!-- <th scope="col"></th> -->
+    <th scope="col"></th>
+    <!-- <th scope="col"></th> -->
+    <th scope="col"></th>
+
+    {% for x in methods %}
+    <tr id="row{{x.id}}">
+        <td>
+        <a
+          id="name{{x.id}}"
+          class="item{{x.id}} parent"
+          href="/edit_method/{{x.id}}"
+          >{{x.name}}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p></p>
+</div>
+{% endblock %}

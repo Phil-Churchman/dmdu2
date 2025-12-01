@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    {% block title %}
+
+    {% endblock %}
+
+    <link href="{% static '/css/bootstrap.css' %}" rel="stylesheet">
+  
+</head>
+{% load crispy_forms_tags %}
+<body>
+<div class="container m-0">
+    <p></p>
+    
+    {% block heading %}
+    {% endblock %}
+
+<form method="post">
+  {% csrf_token %}
+  {%if form%}
+  {{ form|crispy }}
+  {%endif%}
+  <button class="btn btn-primary" type="submit">Log In</button>
+</form>
+{% block additional %}
+
+{% endblock %}
+
+</div>
+<script src="{% static '/js/bootstrap.bundle.js' %}"></script>
+</div>
+</body>
+</html>
