@@ -139,6 +139,6 @@ class LookupForm(forms.ModelForm):
             self.fields[i].label = ref[i]
         for i in ["version"]:
             self.fields[i].widget = forms.HiddenInput()
-        if not user.is_superuser:
-            for i in range(10):
-                self.fields["value_" + str(i+1) + "_is_option_reqt"].widget = forms.HiddenInput()
+        # if not user.is_superuser:
+        #     for i in range(10):
+        #         self.fields["value_" + str(i+1) + "_is_option_reqt"].widget = forms.HiddenInput()

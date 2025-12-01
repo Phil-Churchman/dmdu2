@@ -497,8 +497,9 @@ def edit_variables(request):
     if request.user.is_superuser:
         context["note"] = "(*): Uncheck if use case req't<br>Notes:<br>-  Method requirement is where importance is defined by the method and the degree fulfilled by the use case<br>-  Use case requirement is where importance is defined by the use case and the degree fulfilled by the method<br>-  Variable factor = (1 - importance) + (importance * degree fulfilled)<br>-  Method suitability = Product of variable factors"
     else:
-        context["note"] = "Notes:<br>-  Importance is defined by the method and the degree fulfilled by the use case<br>-  Variable factor = (1 - importance) + (importance * degree fulfilled)<br>-  Method suitability = Product of variable factors"
-
+        # context["note"] = "Notes:<br>-  Importance is defined by the method and the degree fulfilled by the use case<br>-  Variable factor = (1 - importance) + (importance * degree fulfilled)<br>-  Method suitability = Product of variable factors"
+        context["note"] = "(*): Uncheck if use case req't<br>Notes:<br>-  Method requirement is where importance is defined by the method and the degree fulfilled by the use case<br>-  Use case requirement is where importance is defined by the use case and the degree fulfilled by the method<br>-  Variable factor = (1 - importance) + (importance * degree fulfilled)<br>-  Method suitability = Product of variable factors"
+    
     return render(request, 'edit_variables.html', context)     
 
 def view_method(request, index, guest):
