@@ -40,9 +40,9 @@ class Method(models.Model):
     version = models.ForeignKey(Version, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50)
     index = models.CharField(max_length=3)
-    description = models.CharField(max_length=1000, blank=True, null=True)
-    long_description = models.CharField(max_length=10000, blank=True, null=True)
-    links  = models.CharField(max_length=10000, blank=True, null=True, default="[]")
+    description = models.CharField(max_length=1024, blank=True, null=True)
+    long_description = models.CharField(max_length=8000, blank=True, null=True)
+    links  = models.CharField(max_length=8000, blank=True, null=True, default="[]")
     dmdu = models.BooleanField(default=False)
     management = models.CharField(max_length=50, default="Undefined")
     process = models.CharField(max_length=50, default="Undefined")
@@ -67,7 +67,7 @@ class Method(models.Model):
 
 class Master(models.Model):
     ref = models.CharField(max_length=10, default="default", unique = True)
-    methods = models.CharField(max_length=10000, blank=True, null=True)
+    methods = models.CharField(max_length=8000, blank=True, null=True)
     lookup = models.CharField(max_length=1000, blank=True, null=True)
 
 class Lookup(models.Model):
