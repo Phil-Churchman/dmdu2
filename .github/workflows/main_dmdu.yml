@@ -22,7 +22,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Install Oryx (for build)
         run: |
@@ -68,9 +68,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F645D62F9E9445D3B06125834FEE5642 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2898B0F1F0994549849C0944A98E6838 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DA690FEF882341D8AF8DEAE0694B8ABE }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_98A3A5F22AFC49C280B3D26C8423F15C }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_969B834A79C04E2FA685DC80F9D598D9 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_70AECE6C305C4B129F6717FBAB21442D }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
