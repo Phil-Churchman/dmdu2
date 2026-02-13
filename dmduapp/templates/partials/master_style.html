@@ -250,5 +250,43 @@ img {
     thead .sticky-col {
     z-index: 4;
   }
+/* The 'Nuclear' export class */
+.export-mode, .export-mode * {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* The Slider Fix: Using a linear-gradient to 'fake' the bar */
+.export-mode input[type="range"].form-range {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-color: transparent !important;
+    
+    /* This draws a 6px grey bar in the vertical center of the input */
+    background-image: linear-gradient(
+        to bottom, 
+        transparent calc(50% - 3px), 
+        #dee2e6 calc(50% - 3px), 
+        #dee2e6 calc(50% + 3px), 
+        transparent calc(50% + 3px)
+    ) !important;
+    
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 100% !important;
+}
+
+/* Ensure the thumb (the blue circle) is still visible */
+.export-mode input[type="range"].form-range::-webkit-slider-thumb {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    height: 1rem !important;
+    width: 1rem !important;
+    border-radius: 50% !important;
+    background-color: #0d6efd !important;
+    border: none !important;
+    /* Move thumb to sit on our 'fake' bar */
+    margin-top: 0 !important; 
+}
 
 </style>
