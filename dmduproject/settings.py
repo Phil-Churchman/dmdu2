@@ -89,8 +89,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "dmduproject.wsgi.application"
 
-RECAPTCHA_PUBLIC_KEY = '6Ld1VLAqAAAAAI2F6JJK_5evICQXrmSY7fPh9WN9'
-RECAPTCHA_PRIVATE_KEY = '6Ld1VLAqAAAAAB2yjFpE59ZnipLXxU6j6Wx8obUn'
+# Read from the environment (see .env) so the secret is not tracked in git.
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
