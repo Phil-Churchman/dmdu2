@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% load static %} 
+    {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static '/images/favicon.svg' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static '/images/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" href="{% static '/images/icon-180x180.png' %}">
     <script src="{% static '/js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static '/js/html2png.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
